@@ -2,7 +2,8 @@ import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button, Container } from '@mui/material';
 import * as dotenv from 'dotenv';
-import TopBar from 'components/TopBar';
+import BottomNavBar from 'components/nav/BottomNavBar';
+import AuthenticationButton from 'components/auth/AuthenticationButton';
 dotenv.config({ path: __dirname + '/.env' });
 
 const Dashboard: React.FC = () => {
@@ -20,12 +21,13 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <TopBar />
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <h2>
           Welcome back, {user?.name} - {user?.email}
         </h2>
         <Button onClick={copyToken}>Copy Token</Button>
+        <BottomNavBar />
+        <AuthenticationButton />
       </Container>
     </>
   );
