@@ -1,7 +1,10 @@
 import { gql } from '@apollo/client';
 
 export const INCOME_BY_PAYMENT_METHOD = gql`
-  query INCOME_BY_PAYMENT_METHOD($startDate: DateTime, $endDate: DateTime) {
+  subscription INCOME_BY_PAYMENT_METHOD(
+    $startDate: DateTime
+    $endDate: DateTime
+  ) {
     incomeGroupBy(
       field: "paymentMethod"
       valueType: "sum"
