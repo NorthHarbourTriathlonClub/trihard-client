@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AuthenticationButton from 'components/auth/AuthenticationButton';
+import { images } from 'assets/Images';
 
 function Copyright(props: any) {
   return (
@@ -23,10 +24,21 @@ function Copyright(props: any) {
     >
       {'Copyright © '}
       <Link color="inherit" href="#">
-        MoneyApp
+        Trihard
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        {...props}
+      >
+        Created by{' '}
+        <Link color="inherit" href={`${images.creatorUrl}`}>
+          Mingyang Li
+        </Link>
+      </Typography>
     </Typography>
   );
 }
@@ -54,8 +66,8 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              'url(https://i.insider.com/5e14be3924fe120f6d431d6a?width=1000&format=jpeg&auto=webp)',
+            backgroundImage: `url(${images.loginBanner})`,
+            // https://blog.mapmyrun.com/wp-content/uploads/2017/07/6-Things-to-Know-Before-Swimming-in-Open-Water.jpg
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'

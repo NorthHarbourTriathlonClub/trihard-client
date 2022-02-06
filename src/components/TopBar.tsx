@@ -22,7 +22,7 @@ export default function TopBar() {
             <SideBar />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            MoneyApp
+            Trihard - Training Management Software for NHTC
           </Typography>
           <AuthenticationButton />
         </Toolbar>
