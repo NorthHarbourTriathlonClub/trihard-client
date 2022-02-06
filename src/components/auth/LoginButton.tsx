@@ -11,7 +11,7 @@ const LoginButton = () => {
       sx={{ mt: 3, mb: 2 }}
       onClick={() => loginWithRedirect()}
     >
-      {!isAuthenticated && isLoading ? 'Logging you in...' : 'Login'}
+      {!isAuthenticated && isLoading ? 'Logging you in...' : 'Login or sign up'}
     </Button>
   );
 };
