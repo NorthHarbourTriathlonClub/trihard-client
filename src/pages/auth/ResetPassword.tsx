@@ -67,7 +67,6 @@ export default function ResetPassword() {
           md={7}
           sx={{
             backgroundImage: `url(${images.loginBanner})`,
-            // https://blog.mapmyrun.com/wp-content/uploads/2017/07/6-Things-to-Know-Before-Swimming-in-Open-Water.jpg
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'
@@ -90,9 +89,7 @@ export default function ResetPassword() {
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
+            <Typography variant="h5">Sign in</Typography>
             <Box
               component="form"
               noValidate

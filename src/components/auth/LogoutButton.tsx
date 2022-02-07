@@ -1,15 +1,18 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import { Button } from '@mui/material';
 
 const LogoutButton = () => {
   const { logout, isAuthenticated, isLoading } = useAuth0();
 
   return (
-    <button
-      className="h-12 px-6 text-indigo-100 transition-colors duration-350 bg-green-600 rounded-lg focus:shadow-outline hover:bg-red-800"
+    <Button
+      fullWidth
+      variant="contained"
+      sx={{ mt: 3, mb: 2 }}
       onClick={() => logout()}
     >
       {isAuthenticated && isLoading ? 'Logging you out' : 'Logout'}
-    </button>
+    </Button>
   );
 };
 

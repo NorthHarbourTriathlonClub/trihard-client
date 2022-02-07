@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import Dashboard from 'pages/Dashboard';
@@ -33,13 +33,13 @@ const UnauthenticatedRoutes = () => (
 );
 
 interface RouteProps {
-  children: any;
+  children: ReactNode;
   path: string;
 }
 
 const AuthenticatedRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
   const { isAuthenticated, user } = useAuth0();
-  console.log(user);
+  console.table(user);
   return (
     <Route
       {...rest}
@@ -63,9 +63,11 @@ const AdminRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
 };
 
 const AppRoutes = () => {
-  const { isLoading } = useAuth0();
+  const { isLoading, isAuthenticated } = useAuth0();
   if (isLoading) {
     return <Loading />;
+  } else {
+    if (isAuthenticated) history.push('/dashboard');
   }
   return (
     <>

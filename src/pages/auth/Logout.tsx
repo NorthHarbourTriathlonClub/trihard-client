@@ -47,9 +47,7 @@ export default function Logout() {
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              You're logged out
-            </Typography>
+            <Typography variant="h5">You're logged out</Typography>
             <Box component="form" noValidate sx={{ mt: 1 }}>
               <AuthenticationButton />
               <Copyright sx={{ mt: 5 }} />

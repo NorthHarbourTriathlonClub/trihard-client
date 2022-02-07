@@ -7,7 +7,7 @@ const Loading = () => {
         <span className="visually-hidden content-center items-center place-items-center">
           <CircularProgress />
           <p className="antialiased text-2xl font-bold">
-            Making some more money...
+            Going for a swim, will be back...
           </p>
         </span>
       </div>

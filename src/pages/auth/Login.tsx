@@ -56,9 +56,7 @@ export default function Login() {
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in to TriHard (NHTC)
-            </Typography>
+            <Typography variant="h5">Sign in to TriHard (NHTC)</Typography>
             <Box component="form" noValidate sx={{ mt: 1 }}>
               <AuthenticationButton />
               <Copyright sx={{ mt: 5 }} />
