@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import Dashboard from 'pages/Dashboard';
@@ -6,53 +6,132 @@ import 'tailwindcss/tailwind.css';
 import { ApolloProvider, ApolloClient, HttpLink } from '@apollo/client';
 import * as dotenv from 'dotenv';
 import Login from 'pages/auth/Login';
-import Loading from 'pages/Loading';
-import jwt from 'jwt-decode';
 import Forbidden from 'pages/auth/Forbidden';
 import { Cache } from './graphql/Cache';
-import { DecodedJwt } from 'dto/Auth0.dto';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
+import Sessions from 'pages/Sessions';
+import Payments from 'pages/Payments';
+import Loading from 'pages/Loading';
+import Profile from 'pages/auth/Profile';
+import { createBrowserHistory } from 'history';
+import Auth0ProviderWithHistory from 'components/auth/Auth0Provider';
 dotenv.config({ path: __dirname + '.env' });
 
-const App: React.FC = () => {
-  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-  const [token, setToken] = useState<string>('');
+export const history = createBrowserHistory();
+
+const UnauthenticatedRoutes = () => (
+  <Switch>
+    <Route path="/" component={Login} />
+    <Route exact path="/loading" component={Loading} />
+    <Route exact path="/forbidden" component={Forbidden} />
+  </Switch>
+);
+
+interface RouteProps {
+  children: any;
+  path: string;
+}
+
+const AuthenticatedRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
+  const { isAuthenticated, user } = useAuth0();
+  console.log(user);
+  return (
+    <Route
+      {...rest}
+      render={() => (isAuthenticated ? { children } : <Redirect to="/" />)}
+    ></Route>
+  );
+};
+
+const AdminRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
+  const { isAuthenticated } = useAuth0();
+  const roles = ['sdk', 'sd'];
+  const isAdmin = roles[0] === 'admin' ? true : false;
+  return (
+    <Route
+      {...rest}
+      render={() =>
+        isAuthenticated && isAdmin ? { children } : <Redirect to="/" />
+      }
+    ></Route>
+  );
+};
+
+const AppRoutes = () => {
+  const { isLoading } = useAuth0();
+  if (isLoading) {
+    return <Loading />;
+  }
+  return (
+    <>
+      <Switch>
+        <AuthenticatedRoute path="/dashboard">
+          <Dashboard />
+        </AuthenticatedRoute>
+        <AdminRoute path="/sessions">
+          <Sessions />
+        </AdminRoute>
+        <AuthenticatedRoute path="/payments">
+          <Payments />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute path="/profile">
+          <Profile />
+        </AuthenticatedRoute>
+        <UnauthenticatedRoutes />
+      </Switch>
+    </>
+  );
+};
+
+const AppRoot = () => {
+  const [accessToken, setAccessToken] = useState<string>('');
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+
+  const getAccessToken = useCallback(async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      setAccessToken(token);
+    } catch (err) {
+      loginWithRedirect();
+    }
+  }, [getAccessTokenSilently, loginWithRedirect]);
 
   useEffect(() => {
-    const getToken = async () => {
-      try {
-        const accessToken = await getAccessTokenSilently();
-        setToken(accessToken);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    getToken();
-  }, [getAccessTokenSilently, token]);
+    getAccessToken();
+  }, [getAccessToken]);
+
+  if (!accessToken) {
+    return <Loading />;
+  }
 
   const client = new ApolloClient({
     link: new HttpLink({
       uri: process.env.REACT_APP_API_URL,
-      // In most cases, your API has private routes. Hence we add auth header to our apollo client:)
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     }),
     cache: Cache,
   });
 
-  if (!isAuthenticated) return <Login />;
-  else if (isLoading) return <Loading />;
-  else if (token !== '') {
-    const decodedUser: DecodedJwt = jwt(token);
-    // You can define your OWN rules for when to block user from accessing certain pages depending on their auth token after decode
-    // For my case, I simply blocked everyone who doesn't have custom permission scopes defined from Auth0 management panel
-    if (decodedUser.permissions?.length === 0) return <Forbidden />;
-  }
   return (
     <ApolloProvider client={client}>
-      <Dashboard />
+      <Router>
+        <AppRoutes />
+      </Router>
     </ApolloProvider>
   );
 };
 
-export default App;
+export default function App() {
+  return (
+    <Auth0ProviderWithHistory>
+      <AppRoot />
+    </Auth0ProviderWithHistory>
+  );
+}

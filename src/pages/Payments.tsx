@@ -1,6 +1,6 @@
 import CircularProgress from '@mui/material/CircularProgress';
 
-const Profile = () => {
+const Payments = () => {
   return (
     <div className="flex h-screen">
       <div className="m-auto">
@@ -13,4 +13,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Payments;
