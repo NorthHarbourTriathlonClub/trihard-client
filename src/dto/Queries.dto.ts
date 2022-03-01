@@ -1,21 +1,44 @@
-/*
-- Feel free to define the response type of your GraphQL queries here, or delete it if you're a bold dev who doesn't need type safety:)
-- Below types are just examples for your reference.
-- For e.g, the data returned by your query hasa type of IncomeGroupByQueryResponse, which has an array of IncomeGroupByQueryBody
-*/
-
 // INCOME_BY_BLAHBLAH
-export interface IncomeGroupByQueryResponse {
-  incomeGroupBy: IncomeGroupByQueryBody[];
+export interface QueryResponse {
+  data: [];
 }
 
-export interface IncomeGroupByQueryBody {
-  incomePaidBy?: string;
-  incomePaymentMethod?: string;
-  incomeType?: string;
-  sum?: number;
-  count?: number;
-  currency?: string;
-  date?: string;
-  __typename?: string;
+interface SystemFields {
+  id?: number;
+
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
+
+  createdBy?: User;
+  updatedBy?: User;
+  deletedBy?: User;
 }
+
+export interface Session extends SystemFields {
+  sessionDate?: Date;
+  attendees?: User[];
+  sessionType?: SessionType;
+}
+
+export interface Payment extends SystemFields {
+  paidBy?: User;
+  amount?: number;
+  verified?: boolean;
+  verifiedBy?: User;
+  verifiedAt?: Date;
+  sessions?: Session[];
+}
+
+export interface User extends SystemFields {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  role?: Role;
+  sessions?: Session[];
+  payments?: Payment[];
+}
+
+export type SessionType = 'Swim' | 'Bike' | 'Run' | 'Swim & Bike & Run';
+
+export type Role = 'member' | 'coach' | 'admin';
