@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Auth0ProviderWithHistory from './components/auth/Auth0Provider';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 ReactDOM.render(
   <React.Fragment>
@@ -15,3 +16,5 @@ ReactDOM.render(
   </React.Fragment>,
   document.getElementById('root'),
 );
+
+serviceWorkerRegistration.register();
