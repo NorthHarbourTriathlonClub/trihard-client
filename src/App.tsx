@@ -12,7 +12,6 @@ import {
   Route,
   Switch,
   Redirect,
-  useHistory,
 } from 'react-router-dom';
 import Sessions from 'pages/Sessions';
 import Payments from 'pages/Payments';
@@ -31,9 +30,7 @@ const routes: IRoute[] = [
 
 const App: React.FC = () => {
   const [accessToken, setAccessToken] = useState<string>('');
-  const { getAccessTokenSilently, loginWithRedirect, isAuthenticated } =
-    useAuth0();
-  const history = useHistory();
+  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
 
   const getAccessToken = useCallback(async () => {
     try {
@@ -48,13 +45,6 @@ const App: React.FC = () => {
     getAccessToken();
   }, [getAccessToken]);
 
-  if (!isAuthenticated) {
-    history.push('/login');
-  } else {
-    history.push('/dashboard');
-  }
-
-  console.log(`isAuthenticated: ${isAuthenticated}`);
   const client = new ApolloClient({
     link: new HttpLink({
       uri: process.env.REACT_APP_API_URL,
