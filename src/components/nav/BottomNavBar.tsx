@@ -5,6 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PoolIcon from '@mui/icons-material/Pool';
 import PaidIcon from '@mui/icons-material/Paid';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 export default function BottomNavBar() {
   const [value, setValue] = React.useState('recents');
@@ -20,20 +21,29 @@ export default function BottomNavBar() {
       value={value}
       onChange={handleChange}
     >
-      <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} />
       <BottomNavigationAction
         label="Sessions"
-        value="sessions"
+        value="Sessions"
         icon={<PoolIcon />}
       />
       <BottomNavigationAction
         label="Payments"
-        value="payments"
+        value="Payments"
         icon={<PaidIcon />}
       />
       <BottomNavigationAction
+        label="Dashboard"
+        value="Dashboard"
+        icon={<HomeIcon />}
+      />
+      <BottomNavigationAction
+        label="Members"
+        value="Members"
+        icon={<PeopleAltIcon />}
+      />
+      <BottomNavigationAction
         label="Profile"
-        value="profile"
+        value="Profile"
         icon={<AccountCircleIcon />}
       />
     </BottomNavigation>
