@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Paper from '@mui/material/Paper';
@@ -7,9 +6,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AuthenticationButton from 'components/auth/AuthenticationButton';
 import { images } from 'assets/Images';
 import Copyright from 'components/auth/Copyright';
+import LoginButton from 'components/auth/LoginButton';
 
 const theme = createTheme();
 
@@ -58,7 +57,7 @@ export default function Login() {
             </Avatar>
             <Typography variant="h5">Sign in to TriHard (NHTC)</Typography>
             <Box component="form" noValidate sx={{ mt: 1 }}>
-              <AuthenticationButton />
+              <LoginButton />
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>

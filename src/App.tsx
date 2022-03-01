@@ -6,40 +6,34 @@ import 'tailwindcss/tailwind.css';
 import { ApolloProvider, ApolloClient, HttpLink } from '@apollo/client';
 import * as dotenv from 'dotenv';
 import Login from 'pages/auth/Login';
-import Forbidden from 'pages/auth/Forbidden';
 import { Cache } from './graphql/Cache';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
+  useHistory,
 } from 'react-router-dom';
 import Sessions from 'pages/Sessions';
 import Payments from 'pages/Payments';
-import Loading from 'pages/Loading';
 import Profile from 'pages/auth/Profile';
-import { createBrowserHistory } from 'history';
 import Auth0ProviderWithHistory from 'components/auth/Auth0Provider';
 import PageContainer from 'pages/PageContainer';
 import { IRoute } from 'dto/Routes.dto';
 dotenv.config({ path: __dirname + '.env' });
 
 const routes: IRoute[] = [
-  { path: '/', component: <Login /> },
-  { path: '/login', component: <Login /> },
-  { path: '/loading', component: <Loading /> },
   { path: '/dashboard', component: <Dashboard /> },
   { path: '/profile', component: <Profile /> },
   { path: '/payments', component: <Payments /> },
   { path: '/sessions', component: <Sessions /> },
-  { path: '/forbidden', component: <Forbidden /> },
 ];
 
-export const history = createBrowserHistory();
-
-const App = () => {
+const App: React.FC = () => {
   const [accessToken, setAccessToken] = useState<string>('');
-  const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect, isAuthenticated } =
+    useAuth0();
+  const history = useHistory();
 
   const getAccessToken = useCallback(async () => {
     try {
@@ -54,10 +48,13 @@ const App = () => {
     getAccessToken();
   }, [getAccessToken]);
 
-  if (!accessToken) {
-    history.push('/loading');
+  if (!isAuthenticated) {
+    history.push('/login');
+  } else {
+    history.push('/dashboard');
   }
 
+  console.log(`isAuthenticated: ${isAuthenticated}`);
   const client = new ApolloClient({
     link: new HttpLink({
       uri: process.env.REACT_APP_API_URL,
@@ -79,6 +76,9 @@ const App = () => {
                 return <Redirect to="/login" />;
               }}
             />
+            <Route exact path={'/login'}>
+              <Login />
+            </Route>
             {routes.map((r) => {
               return (
                 <Route exact path={r.path}>
