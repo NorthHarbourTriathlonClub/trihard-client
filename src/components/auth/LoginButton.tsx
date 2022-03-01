@@ -1,7 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
-import * as dotenv from 'dotenv';
-dotenv.config({ path: __dirname + '.env' });
+import { secrets } from 'config/config.service';
 
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
@@ -12,7 +11,7 @@ const LoginButton = () => {
       sx={{ mt: 3, mb: 2 }}
       onClick={() =>
         loginWithRedirect({
-          redirectUri: `${process.env.REACT_APP_URL}dashboard`,
+          redirectUri: `${secrets.REACT_APP_URL}dashboard`,
         })
       }
     >

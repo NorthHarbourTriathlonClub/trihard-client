@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import './App.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import Dashboard from 'pages/Dashboard';
 import 'tailwindcss/tailwind.css';
 import { ApolloProvider, ApolloClient, HttpLink } from '@apollo/client';
-import * as dotenv from 'dotenv';
 import Login from 'pages/auth/Login';
 import { Cache } from './graphql/Cache';
 import {
@@ -19,10 +17,12 @@ import Profile from 'pages/auth/Profile';
 import Auth0ProviderWithHistory from 'components/auth/Auth0Provider';
 import PageContainer from 'pages/PageContainer';
 import { IRoute } from 'dto/Routes.dto';
-dotenv.config({ path: __dirname + '.env' });
+import Members from 'pages/Members';
+import { secrets } from 'config/config.service';
 
 const routes: IRoute[] = [
   { path: '/dashboard', component: <Dashboard /> },
+  { path: '/members', component: <Members /> },
   { path: '/profile', component: <Profile /> },
   { path: '/payments', component: <Payments /> },
   { path: '/sessions', component: <Sessions /> },
@@ -47,7 +47,7 @@ const App: React.FC = () => {
 
   const client = new ApolloClient({
     link: new HttpLink({
-      uri: process.env.REACT_APP_API_URL,
+      uri: secrets.REACT_APP_API_URL,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

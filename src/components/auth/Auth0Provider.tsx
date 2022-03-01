@@ -1,12 +1,11 @@
 import { useHistory } from 'react-router-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
-import * as dotenv from 'dotenv';
-dotenv.config({ path: __dirname + '/.env' });
+import { secrets } from 'config/config.service';
 
 const Auth0ProviderWithHistory = ({ children }: any) => {
-  const domain = process.env.REACT_APP_AUTH0_DOMAIN || 'not_provided';
-  const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID || 'not_provided';
-  const audience = process.env.REACT_APP_AUTH0_AUDIENCE || 'not_provided';
+  const domain = secrets.REACT_APP_AUTH0_DOMAIN || 'not_provided';
+  const clientId = secrets.REACT_APP_AUTH0_CLIENT_ID || 'not_provided';
+  const audience = secrets.REACT_APP_AUTH0_AUDIENCE || 'not_provided';
 
   const history = useHistory();
 

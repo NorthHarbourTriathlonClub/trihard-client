@@ -1,6 +1,7 @@
 export type IPath =
   | '/'
   | '/dashboard'
+  | '/members'
   | '/payments'
   | '/sessions'
   | '/login'
